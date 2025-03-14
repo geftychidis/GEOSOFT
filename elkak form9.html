@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Φόρμα Υποβολής Στοιχείων (Πλήρης)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    form {
+      max-width: 600px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="email"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      margin-top: 5px;
+    }
+    .checkbox-group,
+    .radio-group {
+      margin-top: 10px;
+    }
+    .checkbox-group label,
+    .radio-group label {
+      font-weight: normal;
+      display: inline-block;
+      margin-right: 15px;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    .buttons button {
+      margin-right: 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .disclaimer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    .required {
+      color: red;
+      margin-left: 5px;
+    }
+  </style>
+  <!-- Συμπερίληψη jsPDF μέσω CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<h2>Φόρμα Υποβολής Στοιχείων</h2>
+
+<form id="myForm" action="#" method="post">
+  <!-- Επωνυμία Επιχείρησης -->
+  <label for="companyName">Επωνυμία Επιχείρησης <span class="required">*</span></label>
+  <input type="text" id="companyName" name="companyName" required>
+
+  <!-- Κατηγορία Επιχείρησης -->
+  <label for="category">Κατηγορία Επιχείρησης <span class="required">*</span></label>
+  <select id="category" name="category" required>
+    <option value="">Παρακαλώ επιλέξτε</option>
+    <option value="startup">START UP</option>
+    <option value="spinoff">SPIN OFF</option>
+    <option value="scaleup">SCALE UP</option>
+    <option value="sme">SMALL or MEDIUM-SIZED ENTREPRISE - SME</option>
+    <option value="corporateventure">CORPORATE VENTURE</option>
+    <option value="largeenterprise">LARGE ENTERPRISE</option>
+  </select>
+
+  <!-- Νομική Μορφή Επιχείρησης/Υπηρεσίας -->
+  <label for="legalForm">Νομική Μορφή Επιχείρησης/Υπηρεσίας <span class="required">*</span></label>
+  <select id="legalForm" name="legalForm" required>
+    <option value="">Παρακαλώ επιλέξτε</option>
+    <option value="amke">ΑΣΤΙΚΗ ΜΗ ΚΕΡΔΟΣΚΟΠΙΚΗ ΕΤΑΙΡΕΙΑ - ΑΜΚΕ</option>
+    <option value="ae">ΑΝΩΝΥΜΗ ΕΤΑΙΡΕΙΑ - ΑΕ</option>
+    <option value="atomiki">ΑΤΟΜΙΚΗ ΕΠΙΧΕΙΡΗΣΗ</option>
+    <option value="ee">ΕΤΕΡΟΡΡΥΘΜΗ ΕΤΑΙΡΕΙΑ - ΕΕ</option>
+    <option value="epe">ΕΤΑΙΡΕΙΑ ΠΕΡΙΟΡΙΣΜΕΝΗΣ ΕΥΘΥΝΗΣ - ΕΠΕ</option>
+    <option value="koinsep">ΚΟΙΝΩΝΙΚΗ ΕΠΙΧΕΙΡΗΣΗ - ΚΟΙΝΣΕΠ</option>
+    <option value="ike">ΙΔΙΩΤΙΚΗ ΚΕΦΑΛΑΙΟΥΧΙΚΗ ΕΤΑΙΡΕΙΑ - ΙΚΕ</option>
+    <option value="oe">ΟΜΟΡΡΥΘΜΗ ΕΤΑΙΡΕΙΑ - ΟΕ</option>
+  </select>
+
+  <!-- Είστε μέλος του ELEVATE GREECE? -->
+  <label for="elevateGreece">Είστε μέλος του ELEVATE GREECE? <span class="required">*</span></label>
+  <select id="elevateGreece" name="elevateGreece" required>
+    <option value="">Παρακαλώ επιλέξτε</option>
+    <option value="yes">Ναι</option>
+    <option value="no">Όχι</option>
+  </select>
+
+  <!-- Ημερομηνία Ίδρυσης -->
+  <label for="foundationDate">Ημερομηνία Ίδρυσης</label>
+  <input type="date" id="foundationDate" name="foundationDate">
+
+  <!-- ΑΦΜ -->
+  <label for="afm">ΑΦΜ <span class="required">*</span></label>
+  <input type="text" id="afm" name="afm" maxlength="9" required placeholder="π.χ. 123456789">
+
+  <!-- Έχετε συμμετάσχει σε ACCELERATOR? -->
+  <label for="acceleratorParticipation">Έχετε συμμετάσχει σε ACCELERATOR? <span class="required">*</span></label>
+  <select id="acceleratorParticipation" name="acceleratorParticipation" required>
+    <option value="">Παρακαλώ επιλέξτε</option>
+    <option value="yes">Ναι</option>
+    <option value="no">Όχι</option>
+  </select>
+
+  <!-- Αν απαντήσατε 'Ναι', παρακαλώ ορίστε ποιον/ποιούς -->
+  <label for="acceleratorDetails">Αν απαντήσατε 'Ναι' στην προηγούμενη ερώτηση, παρακαλώ ορίστε ποιον/ποιούς</label>
+  <textarea id="acceleratorDetails" name="acceleratorDetails" rows="4" placeholder="Περιγράψτε τους ACCELERATOR(s) που συμμετείχατε..."></textarea>
+
+  <!-- Ετήσιος Κύκλος Εργασιών τελευταίου έτους (σε €) -->
+  <label for="annualTurnover">Ετήσιος Κύκλος Εργασιών τελευταίου έτους (σε €) <span class="required">*</span></label>
+  <input type="number" id="annualTurnover" name="annualTurnover" min="0" required placeholder="π.χ. 50000">
+
+  <!-- Μέσος Όρος Απασχολούμενων/εργαζόμενων για το 2024 -->
+  <label for="employees2024">Μέσος Όρος Απασχολούμενων/εργαζόμενων για το 2024</label>
+  <input type="number" id="employees2024" name="employees2024" min="0" value="0">
+
+  <!-- Ιστοσελίδα -->
+  <label for="website">Ιστοσελίδα</label>
+  <input type="url" id="website" name="website" placeholder="π.χ. https://example.com">
+
+  <!-- Ονοματεπώνυμο Υπεύθυνου Επικοινωνίας -->
+  <label for="contactName">Ονοματεπώνυμο Υπεύθυνου Επικοινωνίας <span class="required">*</span></label>
+  <input type="text" id="contactName" name="contactName" required>
+
+  <!-- Θέση Υπεύθυνου Επικοινωνίας -->
+  <label for="contactPosition">Θέση Υπεύθυνου Επικοινωνίας <span class="required">*</span></label>
+  <input type="text" id="contactPosition" name="contactPosition" required>
+
+  <!-- Τηλέφωνο Επικοινωνίας -->
+  <label for="contactPhone">Τηλέφωνο Επικοινωνίας <span class="required">*</span></label>
+  <input type="text" id="contactPhone" name="contactPhone" required placeholder="π.χ. 2101234567 ή +30...">
+
+  <!-- Email Επικοινωνίας -->
+  <label for="contactEmail">Email Επικοινωνίας <span class="required">*</span></label>
+  <input type="email" id="contactEmail" name="contactEmail" required placeholder="example@example.com">
+
+  <!-- Συνεργασία σε τομείς Άμυνας, Ασφάλειας ή Πολιτικής Προστασίας -->
+  <label>Έχετε υφιστάμενη συνεργασία στους τομείς της Άμυνας, της Ασφάλειας ή της Πολιτικής Προστασίας;</label>
+  <div class="checkbox-group">
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="MOD">
+      Ναι, με Υπουργείο Εθνικής Άμυνας
+    </label>
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="CitizenProtection">
+      Ναι, με Υπουργείο Προστασίας του Πολίτη
+    </label>
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="MaritimeMinistry">
+      Ναι, με Υπουργείο Ναυτιλίας και Νησιωτικής Πολιτικής
+    </label>
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="Region">
+      Ναι, με αντίστοιχη Περιφέρεια
+    </label>
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="FireBrigade">
+      Ναι, με Πυροσβεστικό Σώμα
+    </label>
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="TransparencyAuthority">
+      Ναι, με Εθνική Αρχή Διαφάνειας
+    </label>
+    <label>
+      <input type="checkbox" name="collaborationDefense[]" value="No">
+      Όχι, δεν έχουμε συνεργασία
+    </label>
+  </div>
+
+  <!-- Χρηματοδότηση -->
+  <label>Έχετε λάβει χρηματοδότηση; Εάν ναι, ποια είναι η πηγή/οι πηγές;</label>
+  <div class="checkbox-group">
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="angelInvestors">
+      Angel Investors
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="ventureCapital">
+      Venture Capital
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="bankFunding">
+      Bank Funding
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="crowdfunding">
+      Crowdfunding
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="governmentFunding">
+      Government Funding
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="euFunding">
+      EU Funding
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="natoFunding">
+      NATO Funding
+    </label>
+    <label>
+      <input type="checkbox" name="fundingSources[]" value="selfFunding">
+      Self Funding
+    </label>
+  </div>
+
+  <!-- Λεπτομέρειες χρηματοδότησης -->
+  <label for="fundingDetails">Εάν απαντήσατε 'Ναι', παρακαλώ παρέχετε αναλυτικά:</label>
+  <textarea id="fundingDetails" name="fundingDetails" rows="4" placeholder="Περιγράψτε σύντομα τις πηγές και τη χρήση της χρηματοδότησης..."></textarea>
+
+  <!-- Κοινοχρησία Διανοητικής Ιδιοκτησίας -->
+  <label for="ipOwnership">Έχετε κοινοχρησία Διανοητικής Ιδιοκτησίας; <span class="required">*</span></label>
+  <select id="ipOwnership" name="ipOwnership" required>
+    <option value="">Παρακαλώ επιλέξτε</option>
+    <option value="yes">Ναι</option>
+    <option value="no">Όχι</option>
+  </select>
+
+  <label for="ipOwnershipDetails">Αν απαντήσατε 'Ναι', παρακαλώ παρέχετε αναλυτικά:</label>
+  <textarea id="ipOwnershipDetails" name="ipOwnershipDetails" rows="4" placeholder="Περιγράψτε σύντομα τις λεπτομέρειες..."></textarea>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <p>
+      <strong>Σημείωση:</strong> Συμπληρώστε τη φόρμα προσεκτικά. Τα δεδομένα σας θα χρησιμοποιηθούν αποκλειστικά για τους σκοπούς αξιολόγησης και επικοινωνίας, σύμφωνα με την νομοθεσία περί GDPR.
+    </p>
+  </div>
+
+  <!-- Κουμπιά -->
+  <div class="buttons">
+    <button id="saveDraftBtn" type="button" name="saveDraft">Αποθήκευση ως Draft</button>
+    <button id="savePdfBtn" type="button" name="savePdf">Αποθήκευση pdf</button>
+  </div>
+</form>
+
+<script>
+  // Συνάρτηση συλλογής δεδομένων από όλα τα πεδία της φόρμας
+  function getFormData() {
+    return {
+      companyName: document.getElementById("companyName").value,
+      category: document.getElementById("category").value,
+      legalForm: document.getElementById("legalForm").value,
+      elevateGreece: document.getElementById("elevateGreece").value,
+      foundationDate: document.getElementById("foundationDate").value,
+      afm: document.getElementById("afm").value,
+      acceleratorParticipation: document.getElementById("acceleratorParticipation").value,
+      acceleratorDetails: document.getElementById("acceleratorDetails").value,
+      annualTurnover: document.getElementById("annualTurnover").value,
+      employees2024: document.getElementById("employees2024").value,
+      website: document.getElementById("website").value,
+      contactName: document.getElementById("contactName").value,
+      contactPosition: document.getElementById("contactPosition").value,
+      contactPhone: document.getElementById("contactPhone").value,
+      contactEmail: document.getElementById("contactEmail").value,
+      collaborationDefense: Array.from(document.querySelectorAll('input[name="collaborationDefense[]"]:checked')).map(el => el.value),
+      fundingSources: Array.from(document.querySelectorAll('input[name="fundingSources[]"]:checked')).map(el => el.value),
+      fundingDetails: document.getElementById("fundingDetails").value,
+      ipOwnership: document.getElementById("ipOwnership").value,
+      ipOwnershipDetails: document.getElementById("ipOwnershipDetails").value
+    };
+  }
+
+  // Αποθήκευση στο Local Storage (πρόχειρο)
+  document.getElementById("saveDraftBtn").addEventListener("click", function() {
+    const formData = getFormData();
+    localStorage.setItem("draftFormData", JSON.stringify(formData));
+    alert("Το πρόχειρο αποθηκεύτηκε τοπικά στον browser.");
+  });
+
+  // Φόρτωση αποθηκευμένων δεδομένων κατά το φόρτωμα της σελίδας
+  window.addEventListener("load", function() {
+    const savedData = localStorage.getItem("draftFormData");
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      // Γεμίζουμε τα απλά πεδία
+      if (data.companyName) document.getElementById("companyName").value = data.companyName;
+      if (data.category) document.getElementById("category").value = data.category;
+      if (data.legalForm) document.getElementById("legalForm").value = data.legalForm;
+      if (data.elevateGreece) document.getElementById("elevateGreece").value = data.elevateGreece;
+      if (data.foundationDate) document.getElementById("foundationDate").value = data.foundationDate;
+      if (data.afm) document.getElementById("afm").value = data.afm;
+      if (data.acceleratorParticipation) document.getElementById("acceleratorParticipation").value = data.acceleratorParticipation;
+      if (data.acceleratorDetails) document.getElementById("acceleratorDetails").value = data.acceleratorDetails;
+      if (data.annualTurnover) document.getElementById("annualTurnover").value = data.annualTurnover;
+      if (data.employees2024) document.getElementById("employees2024").value = data.employees2024;
+      if (data.website) document.getElementById("website").value = data.website;
+      if (data.contactName) document.getElementById("contactName").value = data.contactName;
+      if (data.contactPosition) document.getElementById("contactPosition").value = data.contactPosition;
+      if (data.contactPhone) document.getElementById("contactPhone").value = data.contactPhone;
+      if (data.contactEmail) document.getElementById("contactEmail").value = data.contactEmail;
+      
+      // Συνεργασίες
+      if (data.collaborationDefense && Array.isArray(data.collaborationDefense)) {
+        data.collaborationDefense.forEach(function(val) {
+          const checkbox = document.querySelector('input[name="collaborationDefense[]"][value="'+val+'"]');
+          if (checkbox) checkbox.checked = true;
+        });
+      }
+      // Χρηματοδότηση
+      if (data.fundingSources && Array.isArray(data.fundingSources)) {
+        data.fundingSources.forEach(function(val) {
+          const checkbox = document.querySelector('input[name="fundingSources[]"][value="'+val+'"]');
+          if (checkbox) checkbox.checked = true;
+        });
+      }
+      if (data.fundingDetails) document.getElementById("fundingDetails").value = data.fundingDetails;
+
+      // Κοινοχρησία Διανοητικής Ιδιοκτησίας
+      if (data.ipOwnership) document.getElementById("ipOwnership").value = data.ipOwnership;
+      if (data.ipOwnershipDetails) document.getElementById("ipOwnershipDetails").value = data.ipOwnershipDetails;
+    }
+  });
+
+  // Δημιουργία PDF με τα δεδομένα της φόρμας και χρήση custom font για Ελληνικά
+  document.getElementById("savePdfBtn").addEventListener("click", function() {
+    const formData = getFormData();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Ενσωμάτωση custom font που υποστηρίζει Ελληνικά.
+    // Αντικαταστήστε το "BASE64_ENCODED_TTF_DATA" με το base64 string του TTF αρχείου που επιλέγετε.
+    doc.addFileToVFS("FreeSans.ttf", "BASE64_ENCODED_TTF_DATA");
+    doc.addFont("FreeSans.ttf", "FreeSans", "normal");
+    doc.setFont("FreeSans");
+
+    let y = 10;
+    doc.setFontSize(14);
+    doc.text("Φόρμα Υποβολής Στοιχείων", 10, y);
+    y += 10;
+    doc.setFontSize(12);
+    doc.text("Επωνυμία Επιχείρησης: " + formData.companyName, 10, y); y += 10;
+    doc.text("Κατηγορία Επιχείρησης: " + formData.category, 10, y); y += 10;
+    doc.text("Νομική Μορφή: " + formData.legalForm, 10, y); y += 10;
+    doc.text("Μέλος ELEVATE GREECE: " + formData.elevateGreece, 10, y); y += 10;
+    doc.text("Ημερομηνία Ίδρυσης: " + formData.foundationDate, 10, y); y += 10;
+    doc.text("ΑΦΜ: " + formData.afm, 10, y); y += 10;
+    doc.text("Συμμετοχή σε ACCELERATOR: " + formData.acceleratorParticipation, 10, y); y += 10;
+    doc.text("Λεπτομέρειες ACCELERATOR: " + formData.acceleratorDetails, 10, y); y += 10;
+    doc.text("Ετήσιος Κύκλος Εργασιών: " + formData.annualTurnover, 10, y); y += 10;
+    doc.text("Μέσος Όρος Εργαζομένων 2024: " + formData.employees2024, 10, y); y += 10;
+    doc.text("Ιστοσελίδα: " + formData.website, 10, y); y += 10;
+    doc.text("Υπεύθυνος Επικοινωνίας: " + formData.contactName, 10, y); y += 10;
+    doc.text("Θέση: " + formData.contactPosition, 10, y); y += 10;
+    doc.text("Τηλέφωνο: " + formData.contactPhone, 10, y); y += 10;
+    doc.text("Email: " + formData.contactEmail, 10, y); y += 10;
+
+    doc.text("Συνεργασίες (Άμυνα/Ασφάλεια/Προστασία): " + formData.collaborationDefense.join(", "), 10, y); y += 10;
+    doc.text("Πηγές Χρηματοδότησης: " + formData.fundingSources.join(", "), 10, y); y += 10;
+    doc.text("Λεπτομέρειες Χρηματοδότησης: " + formData.fundingDetails, 10, y); y += 10;
+
+    doc.text("Κοινοχρησία Δ. Ιδιοκτησίας: " + formData.ipOwnership, 10, y); y += 10;
+    doc.text("Λεπτομέρειες Κοινοχρησίας Δ.Ι.: " + formData.ipOwnershipDetails, 10, y); y += 10;
+
+    // Αποθήκευση του PDF με το όνομα "form_data.pdf"
+    doc.save("form_data.pdf");
+  });
+</script>
+
+</body>
+</html>
